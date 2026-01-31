@@ -6,7 +6,7 @@
 ```json
 {
   "input": {
-    "image": "https://example.com/sample-image.png"
+    "image": "https://res.cloudinary.com/dbur7qch9/image/upload/v1769854619/Charming_Cartoon_Lion_Cub-64933-PNGVerse_przfkt.png"
   }
 }
 ```
@@ -19,7 +19,7 @@ $headers = @{
 }
 $body = @{
     input = @{
-        image = "https://example.com/sample-image.png"
+        image = "https://res.cloudinary.com/dbur7qch9/image/upload/v1769854619/Charming_Cartoon_Lion_Cub-64933-PNGVerse_przfkt.png"
     }
 } | ConvertTo-Json
 
@@ -38,7 +38,7 @@ curl -X POST "https://api.runpod.ai/v2/YOUR_ENDPOINT_ID/runsync" \
   -H "Content-Type: application/json" \
   -d '{
     "input": {
-      "image": "https://example.com/sample-image.png"
+      "image": "https://res.cloudinary.com/dbur7qch9/image/upload/v1769854619/Charming_Cartoon_Lion_Cub-64933-PNGVerse_przfkt.png"
     }
   }'
 ```
@@ -51,13 +51,15 @@ curl -X POST "https://api.runpod.ai/v2/YOUR_ENDPOINT_ID/runsync" \
 ```json
 {
   "input": {
-    "image": "https://example.com/logo.png",
+    "image": "https://res.cloudinary.com/dbur7qch9/image/upload/v1769854618/Little_Coffee_Buddy-29180-PNGVerse_fefqzb.png",
     "config": {
-      "cornerThreshold": 80,
+      "cornerThreshold": 60,
       "colorPrecision": 8,
-      "filterSpeckle": 8,
-      "mode": "spline",
-      "maxIterations": 4
+      "filterSpeckle": 4,
+      "spliceThreshold": 45,
+      "layerDifference": 6,
+      "lengthThreshold": 4.0,
+      "maxIterations": 2
     }
   }
 }
@@ -71,13 +73,15 @@ $headers = @{
 }
 $body = @{
     input = @{
-        image = "https://example.com/logo.png"
+        image = "https://res.cloudinary.com/dbur7qch9/image/upload/v1769854618/Little_Coffee_Buddy-29180-PNGVerse_fefqzb.png"
         config = @{
-            cornerThreshold = 80
+            cornerThreshold = 60
             colorPrecision = 8
-            filterSpeckle = 8
-            mode = "spline"
-            maxIterations = 4
+            filterSpeckle = 4
+            spliceThreshold = 45
+            layerDifference = 6
+            lengthThreshold = 4.0
+            maxIterations = 2
         }
     }
 } | ConvertTo-Json -Depth 3
@@ -100,13 +104,15 @@ curl -X POST "https://api.runpod.ai/v2/YOUR_ENDPOINT_ID/runsync" \
   -H "Content-Type: application/json" \
   -d '{
     "input": {
-      "image": "https://example.com/logo.png",
+      "image": "https://res.cloudinary.com/dbur7qch9/image/upload/v1769854618/Little_Coffee_Buddy-29180-PNGVerse_fefqzb.png",
       "config": {
-        "cornerThreshold": 80,
+        "cornerThreshold": 60,
         "colorPrecision": 8,
-        "filterSpeckle": 8,
-        "mode": "spline",
-        "maxIterations": 4
+        "filterSpeckle": 4,
+        "spliceThreshold": 45,
+        "layerDifference": 6,
+        "lengthThreshold": 4.0,
+        "maxIterations": 2
       }
     }
   }'
@@ -242,16 +248,16 @@ $headers = @{
 }
 
 $imageUrls = @(
-    "https://example.com/image1.png",
-    "https://example.com/image2.png",
-    "https://example.com/image3.png"
+    "https://res.cloudinary.com/dbur7qch9/image/upload/v1769854619/Charming_Cartoon_Lion_Cub-64933-PNGVerse_przfkt.png",
+    "https://res.cloudinary.com/dbur7qch9/image/upload/v1769854618/Little_Coffee_Buddy-29180-PNGVerse_fefqzb.png",
+    "https://res.cloudinary.com/dbur7qch9/image/upload/v1769854617/Gamer_Kid_in_Action-32251-PNGVerse_wzicpr.png"
 )
 
 $config = @{
-    cornerThreshold = 75
+    cornerThreshold = 60
     colorPrecision = 8
-    filterSpeckle = 6
-    mode = "spline"
+    filterSpeckle = 4
+    maxIterations = 2
 }
 
 foreach ($url in $imageUrls) {
@@ -289,11 +295,11 @@ Write-Host "Batch conversion complete!"
 ```json
 {
   "input": {
-    "image": "https://example.com/sketch.png",
+    "image": "https://res.cloudinary.com/dbur7qch9/image/upload/v1769854617/Gamer_Kid_in_Action-32251-PNGVerse_wzicpr.png",
     "config": {
       "colorMode": "binary",
       "filterSpeckle": 4,
-      "cornerThreshold": 70
+      "cornerThreshold": 90
     }
   }
 }
@@ -307,11 +313,11 @@ $headers = @{
 }
 $body = @{
     input = @{
-        image = "https://example.com/sketch.png"
+        image = "https://res.cloudinary.com/dbur7qch9/image/upload/v1769854617/Gamer_Kid_in_Action-32251-PNGVerse_wzicpr.png"
         config = @{
             colorMode = "binary"
             filterSpeckle = 4
-            cornerThreshold = 70
+            cornerThreshold = 90
         }
     }
 } | ConvertTo-Json -Depth 3
@@ -327,19 +333,17 @@ Invoke-RestMethod -Uri "https://api.runpod.ai/v2/YOUR_ENDPOINT_ID/runsync" -Meth
 ```json
 {
   "input": {
-    "image": "https://example.com/detailed-image.png",
+    "image": "https://res.cloudinary.com/dbur7qch9/image/upload/v1769854619/Charming_Cartoon_Lion_Cub-64933-PNGVerse_przfkt.png",
     "config": {
       "colorMode": "color",
       "colorPrecision": 8,
-      "filterSpeckle": 8,
-      "spliceThreshold": 40,
-      "cornerThreshold": 80,
-      "hierarchical": "stacked",
-      "mode": "spline",
-      "layerDifference": 8,
-      "lengthThreshold": 3.0,
-      "maxIterations": 4,
-      "pathPrecision": 6
+      "filterSpeckle": 4,
+      "cornerThreshold": 60,
+      "spliceThreshold": 45,
+      "layerDifference": 6,
+      "lengthThreshold": 4.0,
+      "maxIterations": 2,
+      "pathPrecision": 5
     }
   }
 }
@@ -353,19 +357,17 @@ $headers = @{
 }
 $body = @{
     input = @{
-        image = "https://example.com/detailed-image.png"
+        image = "https://res.cloudinary.com/dbur7qch9/image/upload/v1769854619/Charming_Cartoon_Lion_Cub-64933-PNGVerse_przfkt.png"
         config = @{
             colorMode = "color"
             colorPrecision = 8
-            filterSpeckle = 8
-            spliceThreshold = 40
-            cornerThreshold = 80
-            hierarchical = "stacked"
-            mode = "spline"
-            layerDifference = 8
-            lengthThreshold = 3.0
-            maxIterations = 4
-            pathPrecision = 6
+            filterSpeckle = 4
+            cornerThreshold = 60
+            spliceThreshold = 45
+            layerDifference = 6
+            lengthThreshold = 4.0
+            maxIterations = 2
+            pathPrecision = 5
         }
     }
 } | ConvertTo-Json -Depth 3
@@ -393,12 +395,12 @@ API_URL = f"https://api.runpod.ai/v2/{ENDPOINT_ID}/runsync"
 # Test with URL
 payload = {
     "input": {
-        "image": "https://example.com/image.png",
+        "image": "https://res.cloudinary.com/dbur7qch9/image/upload/v1769854618/Little_Coffee_Buddy-29180-PNGVerse_fefqzb.png",
         "config": {
-            "cornerThreshold": 75,
+            "cornerThreshold": 60,
             "colorPrecision": 8,
-            "filterSpeckle": 6,
-            "mode": "spline"
+            "filterSpeckle": 4,
+            "maxIterations": 2
         }
     }
 }
@@ -437,12 +439,12 @@ const API_URL = `https://api.runpod.ai/v2/${ENDPOINT_ID}/runsync`;
 
 const payload = {
   input: {
-    image: 'https://example.com/image.png',
+    image: 'https://res.cloudinary.com/dbur7qch9/image/upload/v1769854618/Little_Coffee_Buddy-29180-PNGVerse_fefqzb.png',
     config: {
-      cornerThreshold: 75,
+      cornerThreshold: 60,
       colorPrecision: 8,
-      filterSpeckle: 6,
-      mode: 'spline'
+      filterSpeckle: 4,
+      maxIterations: 2
     }
   }
 };

@@ -11,6 +11,11 @@ High-performance PNG to SVG converter built with Rust, featuring a production-re
 ```bash
 docker pull igabhix001/jordan-vectorizer:latest
 docker run -p 8000:8000 igabhix001/jordan-vectorizer:latest
+
+# Test it
+curl -X POST "http://localhost:8000/vectorizer/v1/convert" \
+  -H "Content-Type: application/json" \
+  -d '{"image": "https://res.cloudinary.com/dbur7qch9/image/upload/v1769854619/Charming_Cartoon_Lion_Cub-64933-PNGVerse_przfkt.png"}'
 ```
 
 ### Option 2: Build from Source
@@ -21,14 +26,14 @@ docker run -p 8000:8000 igabhix001/jordan-vectorizer:latest
 # Install dependencies
 npm install
 
-# Build native module
+# Build native module (REQUIRED for local development)
 npm run build
 
 # Start API
 python -m uvicorn api.main:app --host 0.0.0.0 --port 8000
 ```
 
-**See [BUILD_INSTRUCTIONS.md](./BUILD_INSTRUCTIONS.md) for detailed build instructions.**
+**See [LOCAL_SETUP.md](./LOCAL_SETUP.md) for detailed local setup instructions.**
 
 ---
 
@@ -126,14 +131,22 @@ curl -X POST "https://api.runpod.ai/v2/YOUR_ENDPOINT_ID/runsync" \
 
 ## Demo
 
-Generated under the following configuration:
+Generated under the default configuration:
 
 ```js
 {
     colorMode: ColorMode.Color,
     colorPrecision: 8,
-    filterSpeckle: 4,
+    filterSpeckle: 4,           // Default: 4 (was 6)
     spliceThreshold: 45,
+    cornerThreshold: 60,         // Default: 60 (was 75)
+    hierarchical: Hierarchical.Stacked,
+    mode: PathSimplifyMode.Spline,
+    layerDifference: 6,
+    lengthThreshold: 4.0,
+    maxIterations: 2,            // Default: 2 (was 3)
+    pathPrecision: 5
+}
     cornerThreshold: 60,
     hierarchical: Hierarchical.Stacked,
     mode: PathSimplifyMode.Spline,

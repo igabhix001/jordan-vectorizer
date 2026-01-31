@@ -104,7 +104,7 @@ curl -X POST "https://api.runpod.ai/v2/YOUR_ENDPOINT_ID/runsync" \
   -H "Content-Type: application/json" \
   -d '{
     "input": {
-      "image": "https://example.com/sample.png"
+      "image": "https://res.cloudinary.com/dbur7qch9/image/upload/v1769854619/Charming_Cartoon_Lion_Cub-64933-PNGVerse_przfkt.png"
     }'
 ```
 
@@ -117,7 +117,7 @@ $headers = @{
 }
 $body = @{
     input = @{
-        image = "https://example.com/sample.png"
+        image = "https://res.cloudinary.com/dbur7qch9/image/upload/v1769854619/Charming_Cartoon_Lion_Cub-64933-PNGVerse_przfkt.png"
     }
 } | ConvertTo-Json
 
@@ -209,7 +209,7 @@ POST https://api.runpod.ai/v2/{ENDPOINT_ID}/runsync
 ```json
 {
   "input": {
-    "image": "https://example.com/image.png",
+    "image": "https://res.cloudinary.com/dbur7qch9/image/upload/v1769854618/Little_Coffee_Buddy-29180-PNGVerse_fefqzb.png",
     "config": {
       "colorMode": "color",
       "colorPrecision": 8,
@@ -337,8 +337,8 @@ See [TEST_EXAMPLES.md](./TEST_EXAMPLES.md) for full test examples with PowerShel
     "config": {
       "colorMode": "color",
       "colorPrecision": 8,
-      "filterSpeckle": 6,
-      "cornerThreshold": 75,
+      "filterSpeckle": 4,
+      "cornerThreshold": 60,
       "mode": "spline",
       "maxIterations": 3
     },

@@ -17,18 +17,19 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 ENV PATH="/root/.cargo/bin:${PATH}"
 
 # Copy package files
-COPY package.json yarn.lock ./
+COPY package.json package-lock.json ./
 COPY Cargo.toml build.rs rustfmt.toml ./
 
 # Install Node.js dependencies
-RUN yarn install --frozen-lockfile
+RUN npm ci
 
 # Copy source code
 COPY src ./src
 COPY index.js index.d.ts ./
+COPY cli ./cli
 
 # Build the native module
-RUN yarn build
+RUN npm run build
 
 # Production stage
 FROM node:20-slim
@@ -46,15 +47,17 @@ COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /app/index.js ./index.js
 COPY --from=builder /app/index.d.ts ./index.d.ts
+COPY --from=builder /app/*.node ./
+
+# Copy CLI
+COPY --from=builder /app/cli ./cli
 
 # Copy API code
 COPY api/requirements.txt ./api/
-RUN pip3 install --no-cache-dir -r api/requirements.txt
+RUN pip3 install --no-cache-dir --break-system-packages -r api/requirements.txt
 
 COPY api/main.py ./api/
-
-# Install the package globally for CLI access
-RUN npm link
+COPY api/vectorizer_wrapper.js ./api/
 
 # Create output directory
 RUN mkdir -p /app/output

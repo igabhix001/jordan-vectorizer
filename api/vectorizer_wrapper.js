@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
 /**
- * Node.js wrapper for the vectorizer CLI
- * Used by the Python API to call the vectorizer
+ * Node.js wrapper for the vectorizer library
+ * Used by the Python API to call the native vectorizer
  */
 
-const { spawn } = require('child_process');
+const fs = require('fs');
 const path = require('path');
 
 async function main() {
@@ -25,69 +25,40 @@ async function main() {
     // Parse configuration
     const config = JSON.parse(configJson);
 
-    // Build CLI arguments
-    const cliArgs = [inputPath, outputPath];
-    
-    if (config.colorMode === 'binary') {
-      cliArgs.push('--color-mode', 'binary');
-    } else {
-      cliArgs.push('--color-mode', 'color');
-    }
-    
-    if (config.colorPrecision) cliArgs.push('--color-precision', config.colorPrecision.toString());
-    if (config.filterSpeckle) cliArgs.push('--filter-speckle', config.filterSpeckle.toString());
-    if (config.spliceThreshold) cliArgs.push('--splice-threshold', config.spliceThreshold.toString());
-    if (config.cornerThreshold) cliArgs.push('--corner-threshold', config.cornerThreshold.toString());
-    if (config.layerDifference) cliArgs.push('--layer-difference', config.layerDifference.toString());
-    if (config.lengthThreshold) cliArgs.push('--length-threshold', config.lengthThreshold.toString());
-    if (config.maxIterations) cliArgs.push('--max-iterations', config.maxIterations.toString());
-    if (config.pathPrecision) cliArgs.push('--path-precision', config.pathPrecision.toString());
-    
-    if (config.hierarchical === 'cutout') {
-      cliArgs.push('--hierarchical', 'cutout');
-    } else {
-      cliArgs.push('--hierarchical', 'stacked');
-    }
-    
-    if (config.mode === 'polygon') {
-      cliArgs.push('--mode', 'polygon');
-    } else if (config.mode === 'none') {
-      cliArgs.push('--mode', 'none');
-    } else {
-      cliArgs.push('--mode', 'spline');
-    }
+    // Load the vectorizer module
+    const vectorizerPath = path.join(__dirname, '..', 'index.js');
+    const { vectorize, ColorMode, Hierarchical, PathSimplifyMode } = require(vectorizerPath);
 
-    // Get CLI path
-    const cliPath = path.join(__dirname, '..', 'cli', 'index.mjs');
+    // Read input image
+    const imageBuffer = fs.readFileSync(inputPath);
 
-    // Run CLI
-    const child = spawn('node', [cliPath, ...cliArgs], {
-      stdio: ['ignore', 'pipe', 'pipe']
-    });
+    // Build vectorizer options
+    const options = {
+      colorMode: config.colorMode === 'binary' ? ColorMode.Binary : ColorMode.Color,
+      colorPrecision: config.colorPrecision || 8,
+      filterSpeckle: config.filterSpeckle || 4,
+      spliceThreshold: config.spliceThreshold || 45,
+      cornerThreshold: config.cornerThreshold || 60,
+      hierarchical: config.hierarchical === 'cutout' ? Hierarchical.Cutout : Hierarchical.Stacked,
+      mode: config.mode === 'polygon' ? PathSimplifyMode.Polygon : 
+            config.mode === 'none' ? PathSimplifyMode.None : PathSimplifyMode.Spline,
+      layerDifference: config.layerDifference || 6,
+      lengthThreshold: config.lengthThreshold || 4.0,
+      maxIterations: config.maxIterations || 2,
+      pathPrecision: config.pathPrecision || 5
+    };
 
-    let stdout = '';
-    let stderr = '';
+    // Convert to SVG
+    const svg = await vectorize(imageBuffer, options);
 
-    child.stdout.on('data', (data) => {
-      stdout += data.toString();
-    });
+    // Write output
+    fs.writeFileSync(outputPath, svg, 'utf-8');
 
-    child.stderr.on('data', (data) => {
-      stderr += data.toString();
-    });
-
-    child.on('close', (code) => {
-      if (code === 0) {
-        console.log('SUCCESS');
-        process.exit(0);
-      } else {
-        console.error('ERROR:', stderr || stdout);
-        process.exit(1);
-      }
-    });
-
+    console.log('SUCCESS');
+    process.exit(0);
   } catch (error) {
     console.error('ERROR:', error.message);
+    console.error(error.stack);
     process.exit(1);
   }
 }

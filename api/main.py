@@ -61,14 +61,14 @@ def get_default_config() -> dict:
     return {
         "colorMode": "color",
         "colorPrecision": 8,
-        "filterSpeckle": 6,
+        "filterSpeckle": 4,
         "spliceThreshold": 45,
-        "cornerThreshold": 75,
+        "cornerThreshold": 60,
         "hierarchical": "stacked",
         "mode": "spline",
         "layerDifference": 6,
         "lengthThreshold": 4.0,
-        "maxIterations": 3,
+        "maxIterations": 2,
         "pathPrecision": 5
     }
 
@@ -152,7 +152,7 @@ def convert_png_to_svg(png_data: bytes, config: dict, output_filename: str) -> t
             cmd,
             capture_output=True,
             text=True,
-            timeout=120
+            timeout=300
         )
         
         if result.returncode != 0:
