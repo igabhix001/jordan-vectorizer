@@ -1,0 +1,19 @@
+{
+  "name": "jordan-vectorizer",
+  "description": "High-performance PNG to SVG converter API",
+  "dockerImage": "docker.io/igabhix001/jordan-vectorizer:latest",
+  "github": "https://github.com/igabhix001/jordan-vectorizer",
+  "containerDiskInGb": 10,
+  "env": {
+    "NODE_ENV": "production"
+  },
+  "ports": "8000/http",
+  "volumeInGb": 0,
+  "gpuTypeId": "NONE",
+  "minWorkers": 0,
+  "maxWorkers": 3,
+  "idleTimeout": 5,
+  "scalerType": "QUEUE_DELAY",
+  "scalerValue": 4,
+  "workerType": "CPU"
+}

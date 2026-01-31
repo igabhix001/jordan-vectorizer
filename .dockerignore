@@ -1,0 +1,17 @@
+node_modules
+.git
+.github
+__test__
+benchmark
+example
+*.md
+!DEPLOYMENT.md
+.eslintrc.yml
+.prettierignore
+.taplo.toml
+.yarnrc.yml
+.yarn
+.cargo
+target
+*.log
+.DS_Store

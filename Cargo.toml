@@ -1,0 +1,21 @@
+[package]
+authors = ["Jordan <jordan@vectorizer.dev>"]
+edition = "2021"
+name    = "jordan-vectorizer"
+version = "1.0.0"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+fastrand     = "2"
+image        = "0.25.5"
+napi         = "2"
+napi-derive  = "2"
+visioncortex = "0.8.8"
+
+[build-dependencies]
+napi-build = "2"
+
+[profile.release]
+lto = true
